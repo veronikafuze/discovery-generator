@@ -2,7 +2,7 @@
 
 ### An AI tool for uncovering non-obvious connections between scientific papers
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.10–3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Ollama](https://img.shields.io/badge/Local_LLM-Ollama-black?style=for-the-badge)](https://ollama.com)
 [![arXiv](https://img.shields.io/badge/Data-arXiv-B31B1B?style=for-the-badge)](https://arxiv.org)
@@ -22,10 +22,15 @@ The pipeline consists of three simple steps:
 ## 🚀 Quick start
 
 ```bash
-# 1. Clone the repository
+# 1. Get the repository: either clone it...
 git clone https://github.com/veronikafuze/discovery-generator.git
 cd discovery-generator
+# ...or download it as a ZIP (green "Code" button → "Download ZIP") and unzip it.
+```
 
+> **Note on the Python version:** the project is tested on Python 3.10–3.14. On the very newest Python (3.15) `pip install` may fail with `Failed building wheel for pyyaml` — if that happens, install Python 3.14 from [python.org](https://www.python.org/downloads/) and recreate the environment with `py -3.14 -m venv venv`.
+
+```bash
 # 2. Create a virtual environment
 python -m venv venv
 # For Windows:
@@ -48,6 +53,8 @@ python 3_generate_hypotheses.py
 ```
 
 > **Note on the model name:** the config file expects a model named `my-llama` (see `OLLAMA_MODEL` in `config.py`). The easiest fix: run `ollama cp llama3.2 my-llama` right after installing — this creates a copy of the model under the expected name. Alternatively, set `OLLAMA_MODEL = "llama3.2"` in `config.py`.
+
+> If the model download fails with a network error (e.g., `TLS handshake timeout`), simply run `ollama run llama3.2` again — the failure is usually temporary.
 
 ## 🎯 Choosing research fields
 
