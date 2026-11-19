@@ -11,6 +11,8 @@
 
 **Discovery Generator** helps researchers save dozens of hours of routine work. The tool automatically downloads fresh papers from arXiv, finds semantically close pairs from different research fields, and uses large language models (LLMs) to generate ready-to-use research hypotheses at their intersection.
 
+> **Tested on:** Windows 10/11, Python 3.14, Ollama 0.40. To check your Windows version, press `Win + R`, type `winver` and press Enter. On Mac/Linux the steps below also work, but the activate command differs (see step 2).
+
 ## ⚙️ How it works
 
 The pipeline consists of three simple steps:
@@ -52,9 +54,31 @@ python 2_embed_and_find_pairs.py
 python 3_generate_hypotheses.py
 ```
 
+> **Note on timing:** step 6 is the slowest one — the model needs about 1–2 minutes per paper pair, so the whole generation can take 15–20 minutes. The window may look "frozen" with a blinking cursor: this is normal, just wait. Steps 1 and 2 take 1–3 minutes each.
+
 > **Note on the model name:** the config file expects a model named `my-llama` (see `OLLAMA_MODEL` in `config.py`). The easiest fix: run `ollama cp llama3.2 my-llama` right after installing — this creates a copy of the model under the expected name. Alternatively, set `OLLAMA_MODEL = "llama3.2"` in `config.py`.
 
-> If the model download fails with a network error (e.g., `TLS handshake timeout`), simply run `ollama run llama3.2` again — the failure is usually temporary.
+> If the model download fails with a network error (e.g., `TLS handshake timeout`), simply run `ollama run llama3.2` again — the failure is usually temporary. If it keeps failing, see the fallback method below.
+
+## 📦 Fallback: importing the model manually
+
+If Ollama cannot download the model from its server (repeated network errors), you can load it from a file instead. This path gives the model the name `my-llama` right away, so step `ollama cp` is **not needed** — skip it.
+
+1. **Download the model file.** In your browser, open `https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF`, find the file `Meta-Llama-3.2-3B-Instruct-Q4_K_M.gguf` (~2 GB) in the "Files" section and download it.
+2. **Create a Modelfile.** In the project folder, create a new text file with a single line pointing to where you saved the downloaded file:
+   ```
+   FROM C:\Users\<YourName>\Downloads\Meta-Llama-3.2-3B-Instruct-Q4_K_M.gguf
+   ```
+   Replace the path with your own: right-click the downloaded file → "Copy as path" → paste. Save the file as `Modelfile.txt` in the project folder.
+3. **Build the model in Ollama.** In the terminal (inside the project folder):
+   ```bash
+   ollama create my-llama -f Modelfile.txt
+   ```
+4. **Check it worked:**
+   ```bash
+   ollama list
+   ```
+   `my-llama` should appear in the list. Then continue from step 5 of the Quick start.
 
 ## 🎯 Choosing research fields
 
