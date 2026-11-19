@@ -36,13 +36,18 @@ source venv/bin/activate
 # 3. Install the dependencies
 pip install -r requirements.txt
 
-# 4. Run the download and connection search
+# 4. Install Ollama (https://ollama.com) and the model
+ollama run llama3.2
+
+# 5. Run the download and connection search
 python 1_fetch_papers.py
 python 2_embed_and_find_pairs.py
 
-# 5. Run the hypothesis generation
+# 6. Run the hypothesis generation
 python 3_generate_hypotheses.py
 ```
+
+> **Note on the model name:** the config file expects a model named `my-llama` (see `OLLAMA_MODEL` in `config.py`). The easiest fix: run `ollama cp llama3.2 my-llama` right after installing — this creates a copy of the model under the expected name. Alternatively, set `OLLAMA_MODEL = "llama3.2"` in `config.py`.
 
 ## 🎯 Choosing research fields
 
@@ -58,17 +63,17 @@ Examples of interesting combinations for experiments:
 
 ## 🤖 Local or cloud-based model?
 
-The `config.py` file contains the `LLM_BACKEND` setting. You can choose between two modes.
+The `config.py` file contains the `LLM_BACKEND` setting.
 
 **Option 1: Local (default, free).**
-Uses `Ollama` on your machine. No data leaves your network. Make sure you have the `llama3.2` model installed.
+Uses `Ollama` on your machine. No data leaves your network. Make sure you have the model installed (see the Quick start section above).
 
-**Option 2: Cloud (faster if your laptop is weak).**
-Use free APIs (e.g., Groq). Get a key at [console.groq.com](https://console.groq.com) and paste it into `config.py`.
+**Option 2: Cloud (planned).**
+Support for free cloud APIs (e.g., Groq) is planned for upcoming versions. For now, please use the local mode.
 
 ## 📄 Output
 
-Once all the scripts have run successfully, a file named **`hypotheses_report.md`** will appear in the `output/` folder — a nicely formatted report with 10 generated hypotheses and links to the source papers.
+Once all the scripts have run successfully, a file named **`hypotheses_report.md`** will appear in the `output/` folder — a nicely formatted report with the generated hypotheses and links to the source papers.
 
 ---
 
