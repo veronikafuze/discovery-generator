@@ -1,6 +1,6 @@
 # 🧠 Discovery Generator
 
-### ИИ-инструмент для поиска неочевидных связей между научными статьями
+### An AI tool for uncovering non-obvious connections between scientific papers
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
@@ -9,67 +9,67 @@
 
 ---
 
-**Discovery Generator** помогает исследователям экономить десятки часов рутины. Инструмент автоматически скачивает свежие статьи из arXiv, находит семантически близкие пары из разных научных областей и генерирует на их стыке готовые исследовательские гипотезы с помощью больших языковых моделей (LLM).
+**Discovery Generator** helps researchers save dozens of hours of routine work. The tool automatically downloads fresh papers from arXiv, finds semantically close pairs from different research fields, and uses large language models (LLMs) to generate ready-to-use research hypotheses at their intersection.
 
-## ⚙️ Как это работает
+## ⚙️ How it works
 
-Пайплайн состоит из трёх простых шагов:
+The pipeline consists of three simple steps:
 
-1. **Сбор данных:** Скрипт `1_fetch_papers.py` скачивает абстракты статей по двум заданным категориям.
-2. **Поиск связей:** Скрипт `2_embed_and_find_pairs.py` переводит тексты в векторное представление и находит пары с высоким смысловым сходством.
-3. **Генерация гипотез:** Скрипт `3_generate_hypotheses.py` отправляет найденные пары нейросети для формулирования научной идеи, обоснования и метода проверки.
+1. **Data collection:** The script `1_fetch_papers.py` downloads paper abstracts for two specified categories.
+2. **Connection search:** The script `2_embed_and_find_pairs.py` converts the texts into vector embeddings and finds pairs with high semantic similarity.
+3. **Hypothesis generation:** The script `3_generate_hypotheses.py` sends the found pairs to the neural network to formulate a research idea, its rationale, and a method for testing it.
 
-## 🚀 Быстрый старт
+## 🚀 Quick start
 
 ```bash
-# 1. Клонируйте репозиторий
+# 1. Clone the repository
 git clone https://github.com/veronikafuze/discovery-generator.git
 cd discovery-generator
 
-# 2. Создайте виртуальное окружение
+# 2. Create a virtual environment
 python -m venv venv
-# Для Windows:
+# For Windows:
 venv\Scripts\activate
-# Для Mac/Linux:
+# For Mac/Linux:
 source venv/bin/activate
 
-# 3. Установите зависимости
+# 3. Install the dependencies
 pip install -r requirements.txt
 
-# 4. Запустите скачивание и поиск связей
+# 4. Run the download and connection search
 python 1_fetch_papers.py
 python 2_embed_and_find_pairs.py
 
-# 5. Запустите генерацию гипотез
+# 5. Run the hypothesis generation
 python 3_generate_hypotheses.py
 ```
 
-## 🎯 Настройка научных областей
+## 🎯 Choosing research fields
 
-По умолчанию инструмент ищет связь между **нейробиологией** (`q-bio.NC`) и **машинным обучением** (`cs.LG`). Вы можете легко поменять темы в файле `config.py`.
+By default, the tool looks for connections between **neuroscience** (`q-bio.NC`) and **machine learning** (`cs.LG`). You can easily change the topics in the `config.py` file.
 
-Где взять другие категории? Полный список доступен в [официальном каталоге arXiv](https://arxiv.org/category_taxonomy).
+Where to find other categories? The full list is available in the [official arXiv catalog](https://arxiv.org/category_taxonomy).
 
-Примеры интересных связок для экспериментов:
+Examples of interesting combinations for experiments:
 
-* `cs.CL` (Компьютерная лингвистика) + `econ.GN` (Экономика)
-* `q-bio.QM` (Количественная биология) + `physics.chem-ph` (Химическая физика)
-* `cond-mat.mtrl-sci` (Материаловедение) + `cs.AI` (Искусственный интеллект)
+* `cs.CL` (Computational Linguistics) + `econ.GN` (Economics)
+* `q-bio.QM` (Quantitative Biology) + `physics.chem-ph` (Chemical Physics)
+* `cond-mat.mtrl-sci` (Materials Science) + `cs.AI` (Artificial Intelligence)
 
-## 🤖 Локальная или облачная нейросеть?
+## 🤖 Local or cloud-based model?
 
-В файле `config.py` есть настройка `LLM_BACKEND`. Вы можете выбрать один из двух режимов.
+The `config.py` file contains the `LLM_BACKEND` setting. You can choose between two modes.
 
-**Вариант 1: Локально (по умолчанию, бесплатно).**
-Использует `Ollama` на вашем компьютере. Никакие данные не уходят в сеть. Убедитесь, что у вас установлена модель `llama3.2`.
+**Option 1: Local (default, free).**
+Uses `Ollama` on your machine. No data leaves your network. Make sure you have the `llama3.2` model installed.
 
-**Вариант 2: Облако (быстрее, если ноутбук слабый).**
-Используйте бесплатные API (например, Groq). Получите ключ на [console.groq.com](https://console.groq.com) и впишите его в `config.py`.
+**Option 2: Cloud (faster if your laptop is weak).**
+Use free APIs (e.g., Groq). Get a key at [console.groq.com](https://console.groq.com) and paste it into `config.py`.
 
-## 📄 Результат
+## 📄 Output
 
-После успешного выполнения всех скриптов, в папке `output/` появится файл **`hypotheses_report.md`** — красивый отчёт с 10 сгенерированными гипотезами и ссылками на исходные статьи.
+Once all the scripts have run successfully, a file named **`hypotheses_report.md`** will appear in the `output/` folder — a nicely formatted report with 10 generated hypotheses and links to the source papers.
 
 ---
 
-*Автор: [Veronika Fuzeinikova](https://github.com/veronikafuze).*
+*Author: [Veronika Fuzeinikova](https://github.com/veronikafuze).*
