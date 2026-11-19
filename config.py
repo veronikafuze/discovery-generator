@@ -1,32 +1,32 @@
-# Какие две разные области скрещиваем.
-CATEGORY_A = "q-bio.NC"   # Нейробиология (Neurons and Cognition)
-CATEGORY_B = "cs.LG"      # Машинное обучение (Machine Learning)
+# Which two different research fields to cross.
+CATEGORY_A = "q-bio.NC"   # Neuroscience (Neurons and Cognition)
+CATEGORY_B = "cs.LG"      # Machine Learning
 
-# Сколько статей качать из каждой области
+# How many papers to download from each field
 MAX_PAPERS_PER_CATEGORY = 150
 
-# Порог сходства (0.6-0.75 - оптимально)
+# Similarity threshold (0.6-0.75 is optimal)
 SIMILARITY_THRESHOLD = 0.35
 
-# Сколько пар гипотез сгенерировать
+# How many hypotheses to generate
 NUM_HYPOTHESES = 10
 
-# === Выбор LLM для генерации гипотез ===
-# Вариант 1: "ollama" — бесплатно локально (сложнее)
-# Вариант 2: "groq" — бесплатный API с лимитами (проще)
+# === LLM backend selection ===
+# Option 1: "ollama" — free and local (harder to set up)
+# Option 2: "groq" — free API with rate limits (easier)
 LLM_BACKEND = "ollama"
 
-# Для Groq (если выбрал LLM_BACKEND = "groq")
-# Получи бесплатный ключ на https://console.groq.com/keys
-GROQ_API_KEY = "вставьте свой ключ"
+# For Groq (if you chose LLM_BACKEND = "groq")
+# Get a free key at https://console.groq.com/keys
+GROQ_API_KEY = "paste your key here"
 GROQ_MODEL = "llama-3.1-8b-instant"
 
-# Для Ollama (если выбрал "ollama")
+# For Ollama (if you chose "ollama")
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "my-llama"
-# Для Polza.ai
-POLZA_API_KEY = "вставьте свой ключ"
+# For Polza.ai
+POLZA_API_KEY = "paste your key here"
 POLZA_MODEL = "meta-llama/llama-3.1-8b-instruct" 
-# Для ZvenoAI
-ZVENO_API_KEY = "вставьте свой ключ"
+# For ZvenoAI
+ZVENO_API_KEY = "paste your key here"
 ZVENO_MODEL = "nvidia/nemotron-3.5-lightning:free"
