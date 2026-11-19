@@ -6,31 +6,31 @@ from config import NUM_HYPOTHESES, OLLAMA_URL, OLLAMA_MODEL
 
 os.makedirs("output", exist_ok=True)
 
-PROMPT_TEMPLATE = """Ты — научный футуролог на стыке дисциплин.
-Тебе даны две статьи из РАЗНЫХ областей. Найди неочевидную, но логичную связь между ними и сформулируй ОДНУ проверяемую исследовательскую гипотезу.
+PROMPT_TEMPLATE = """You are a scientific futurist working at the intersection of disciplines.
+You are given two papers from DIFFERENT fields. Find a non-obvious yet logical connection between them and formulate ONE testable research hypothesis.
 
-Статья A:
-Заголовок: {title_a}
-Абстракт: {abstract_a}
+Paper A:
+Title: {title_a}
+Abstract: {abstract_a}
 
-Статья B:
-Заголовок: {title_b}
-Абстракт: {abstract_b}
+Paper B:
+Title: {title_b}
+Abstract: {abstract_b}
 
-Ответь строго в таком формате (без markdown, без вступлений):
+Answer strictly in the following format (no markdown, no introductions):
 
-ГИПОТЕЗА: <одно предложение — что если применить X из статьи A к проблеме Y из статьи B>
+HYPOTHESIS: <one sentence — what if we apply X from paper A to problem Y from paper B>
 
-ОБОСНОВАНИЕ: <2-3 предложения, почему это может работать — какая общая структура/принцип есть в обеих работах>
+RATIONALE: <2-3 sentences on why this could work — what shared structure/principle exists in both works>
 
-КАК ПРОВЕРИТЬ: <1-2 конкретных эксперимента или метрики, которыми можно проверить гипотезу>
+HOW TO TEST: <1-2 concrete experiments or metrics to verify the hypothesis>
 
-НОВИЗНА: <1 предложение — почему это может быть неочевидно для специалистов из обеих областей>
+NOVELTY: <1 sentence — why this may be non-obvious to specialists from both fields>
 """
 
 def call_ollama(prompt: str) -> str:
     try:
-        # Отправляем запрос локально в Олламу
+        # Send the request to the local Ollama instance
         r = requests.post(OLLAMA_URL, json={
             "model": OLLAMA_MODEL,
             "prompt": prompt,
@@ -40,17 +40,17 @@ def call_ollama(prompt: str) -> str:
         r.raise_for_status()
         return r.json().get("response", "").strip()
     except Exception as e:
-        return f"[ОШИБКА Ollama: {e}]"
+        return f"[Ollama ERROR: {e}]"
 
 if __name__ == "__main__":
-    print("=== Шаг 3: Генерация гипотез через локальную модель Ollama ===")
+    print("=== Step 3: Generating hypotheses with the local Ollama model ===")
     pairs_df = pd.read_csv("output/pairs.csv")
     pairs_df = pairs_df.head(NUM_HYPOTHESES)
     
     results = []
     for i, row in pairs_df.iterrows():
         print(f"\n[{i+1}/{len(pairs_df)}] similarity={row['similarity']}")
-        print("  ⏳ Локальная нейросеть думает (это может занять 1-2 минуты)...")
+        print("  ⏳ The local neural network is thinking (this may take 1-2 minutes)...")
         
         prompt = PROMPT_TEMPLATE.format(
             title_a=row["paper_a_title"],
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         )
         
         answer = call_ollama(prompt)
-        print(answer[:900] + "...") # Показываем первые строчки ответа
+        print(answer[:900] + "...") # Show the first lines of the response
         
         results.append({
             "similarity": row["similarity"],
@@ -75,11 +75,11 @@ if __name__ == "__main__":
     out_df.to_csv("output/hypotheses.csv", index=False)
 
     with open("output/hypotheses_report.md", "w", encoding="utf-8") as f:
-        f.write("# Сгенерированные междисциплинарные гипотезы\n\n")
+        f.write("# Generated cross-disciplinary hypotheses\n\n")
         for i, row in out_df.iterrows():
-            f.write(f"## Гипотеза {i+1} (similarity={row['similarity']})\n\n")
-            f.write(f"**Статья A:** [{row['paper_a_title']}]({row['paper_a_url']})\n\n")
-            f.write(f"**Статья B:** [{row['paper_b_title']}]({row['paper_b_url']})\n\n")
+            f.write(f"## Hypothesis {i+1} (similarity={row['similarity']})\n\n")
+            f.write(f"**Paper A:** [{row['paper_a_title']}]({row['paper_a_url']})\n\n")
+            f.write(f"**Paper B:** [{row['paper_b_title']}]({row['paper_b_url']})\n\n")
             f.write(f"{row['hypothesis']}\n\n---\n\n")
 
-    print(f"\n✅ Готово! {len(out_df)} гипотез сохранены в output/hypotheses_report.md")
+    print(f"\n✅ Done! {len(out_df)} hypotheses saved to output/hypotheses_report.md")
